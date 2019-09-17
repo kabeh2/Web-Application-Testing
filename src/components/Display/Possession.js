@@ -1,13 +1,13 @@
 import React from "react";
 
-const Possession = props => {
+const Possession = ({ name, count }) => {
   return (
     <div className="possession--container">
       <div className="possession--header">
-        <h2 className="possession--title">{props.name}</h2>
+        <h2 className="possession--title">{name}</h2>
       </div>
       <div className="possession--total">
-        <h2>00</h2>
+        <h2>{count}</h2>
       </div>
     </div>
   );
