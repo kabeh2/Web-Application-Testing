@@ -5,23 +5,32 @@ import DisplayTotal from "./DisplayTotal";
 import PitchesTotal from "./PitchesTotal";
 import Possession from "./Possession";
 
-const Display = props => {
+const Display = ({
+  ball,
+  strike,
+  outs,
+  homerun,
+  guestScore,
+  homeScore,
+  guestAtBat,
+  homeAtBat
+}) => {
   return (
     <div className="display__container">
       <DisplayInnings />
-      <DisplayTotal />
+      <DisplayTotal guestScore={guestScore} homeScore={homeScore} />
       <div className="pitches-home--container right">
         <PitchesTotal name="Home" borderSide="right" />
       </div>
       <div className="possession-wrapper">
         <div className="possession--ball">
-          <Possession name="Ball" />
+          <Possession name="Ball" count={ball} />
         </div>
         <div className="possession--strike">
-          <Possession name="Strike" />
+          <Possession name="Strike" count={strike} />
         </div>
         <div className="possession--out">
-          <Possession name="Out" />
+          <Possession name="Out" count={outs} />
         </div>
       </div>
       <div className="pitches-away--container left">
