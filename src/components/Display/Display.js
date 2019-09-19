@@ -13,11 +13,21 @@ const Display = ({
   guestScore,
   homeScore,
   guestAtBat,
-  homeAtBat
+  homeAtBat,
+  inningHRCounter,
+  guestInning,
+  guestInningTotal,
+  homeInning,
+  homeInningTotal
 }) => {
   return (
     <div className="display__container">
-      <DisplayInnings />
+      <DisplayInnings
+        guestInningTotal={guestInningTotal}
+        homeInningTotal={homeInningTotal}
+        guestInning={guestInning}
+        homeInning={homeInning}
+      />
       <DisplayTotal guestScore={guestScore} homeScore={homeScore} />
       <div className="pitches-home--container right">
         <PitchesTotal name="Home" borderSide="right" />

@@ -7,11 +7,35 @@ class App extends Component {
     ball: 0,
     strike: 0,
     outs: 0,
-    homerun: 0,
     guestScore: 0,
     homeScore: 0,
     guestAtBat: true,
-    homeAtBat: false
+    homeAtBat: false,
+    guestInning: 1,
+    guestInningTotal: {
+      1: 0,
+      2: 0,
+      3: 0,
+      4: 0,
+      5: 0,
+      6: 0,
+      7: 0,
+      8: 0,
+      9: 0
+    },
+    homeInning: 1,
+    homeInningTotal: {
+      1: 0,
+      2: 0,
+      3: 0,
+      4: 0,
+      5: 0,
+      6: 0,
+      7: 0,
+      8: 0,
+      9: 0
+    },
+    inningHRCounter: 0
   };
 
   resetPosession = () => {
@@ -21,13 +45,29 @@ class App extends Component {
     });
   };
   resetAll = () => {
-    this.setState({
-      ball: 0,
-      strike: 0,
-      outs: 0,
-      guestAtBat: !this.state.guestAtBat,
-      homeAtBat: !this.state.homeAtBat
-    });
+    if (this.state.guestAtBat) {
+      this.setState({
+        ball: 0,
+        strike: 0,
+        outs: 0,
+        guestAtBat: !this.state.guestAtBat,
+        homeAtBat: !this.state.homeAtBat,
+
+        guestInning: this.state.guestInning + 1,
+        inningHRCounter: 0
+      });
+    } else {
+      this.setState({
+        ball: 0,
+        strike: 0,
+        outs: 0,
+        guestAtBat: !this.state.guestAtBat,
+        homeAtBat: !this.state.homeAtBat,
+
+        homeInning: this.state.homeInning + 1,
+        inningHRCounter: 0
+      });
+    }
   };
 
   nextPossession = () => {
@@ -52,11 +92,22 @@ class App extends Component {
       guestAtBat,
       guestScore,
       homeAtBat,
-      homeScore
+      homeScore,
+      guestInningTotal,
+      guestInning,
+      homeInningTotal,
+      homeInning,
+      inningHRCounter
     } = this.state;
 
     const play = Math.random() * 100;
     console.log(play);
+
+    const guestInningUpdatedTotal = { ...guestInningTotal };
+    guestInningUpdatedTotal[guestInning] = inningHRCounter + 1;
+
+    const homeInningUpdatedTotal = { ...homeInningTotal };
+    homeInningUpdatedTotal[homeInning] = inningHRCounter + 1;
 
     /////////////////////////////////////
     /////////////////////////// IF STRIKE
@@ -75,7 +126,7 @@ class App extends Component {
       }
     }
     /////////////////////////////////////
-    /////////////////////////// IF BALL
+    ///////////////////////////// IF BALL
     else if (play > 45 && play < 90) {
       if (ball < 4 && outs < 3 && strike < 3) {
         this.setState({
@@ -97,7 +148,9 @@ class App extends Component {
       if (guestAtBat) {
         if (strike < 3 && ball < 4) {
           this.setState({
-            guestScore: guestScore + 1
+            guestScore: guestScore + 1,
+            inningHRCounter: inningHRCounter + 1,
+            guestInningTotal: guestInningUpdatedTotal
           });
           alert("Guest Team Homerun!");
           this.resetPosession();
@@ -105,7 +158,9 @@ class App extends Component {
       } else if (homeAtBat) {
         if (strike < 3 && ball < 4) {
           this.setState({
-            homeScore: homeScore + 1
+            homeScore: homeScore + 1,
+            inningHRCounter: inningHRCounter + 1,
+            homeInningTotal: homeInningUpdatedTotal
           });
           alert("Home Team Homerun!");
           this.resetPosession();
@@ -123,7 +178,12 @@ class App extends Component {
       guestScore,
       homeScore,
       guestAtBat,
-      homeAtBat
+      homeAtBat,
+      inningHRCounter,
+      guestInning,
+      guestInningTotal,
+      homeInning,
+      homeInningTotal
     } = this.state;
 
     return (
@@ -141,6 +201,12 @@ class App extends Component {
         >
           At Bat: {guestAtBat ? "Guest" : "Home"}
         </div>
+        <div
+          className="at-bat"
+          style={{ color: "green", fontWeight: "bolder" }}
+        >
+          Inning Homeruns: {inningHRCounter}
+        </div>
 
         <Display
           ball={ball}
@@ -151,6 +217,10 @@ class App extends Component {
           homeScore={homeScore}
           guestAtBat={guestAtBat}
           homeAtBat={homeAtBat}
+          guestInningTotal={guestInningTotal}
+          homeInningTotal={homeInningTotal}
+          guestInning={guestInning}
+          homeInning={homeInning}
         />
       </div>
     );
