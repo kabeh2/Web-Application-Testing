@@ -32,7 +32,7 @@ class App extends Component {
 
   nextPossession = () => {
     if (this.state.outs === 3) {
-      alert("Next Team at Bat!");
+      alert("You have 3 OUTS! Next Team at Bat!");
       this.resetAll();
     } else {
       this.setState({
@@ -128,16 +128,17 @@ class App extends Component {
 
     return (
       <div className="App">
-        {ball === 4 || strike === 3 ? (
+        {ball === 4 || strike === 3 || outs === 3 ? (
           <button onClick={this.nextPossession}>
-            Click for Next Possession!
+            {outs === 3 ? "Click for Next TEAM!" : "Click for Next Possession!"}
           </button>
-        ) : outs === 3 ? (
-          <button onClick={this.nextPossession}>Click for Next TEAM!</button>
         ) : (
           <button onClick={this.handleClick}>Play Ball!</button>
         )}
-        <div className="at-bat" style={{ color: "green" }}>
+        <div
+          className="at-bat"
+          style={{ color: "green", fontWeight: "bolder" }}
+        >
           At Bat: {guestAtBat ? "Guest" : "Home"}
         </div>
 
@@ -157,44 +158,3 @@ class App extends Component {
 }
 
 export default App;
-
-// if (this.state.outs < 3) {
-//   if (this.state.strike > 2 || this.state.ball > 3) {
-//     this.resetPosession();
-//     this.setState({
-//       outs: this.state.outs + 1
-//     });
-//   } else if (this.state.strike < 3 || this.state.ball < 4) {
-//     if (play < 33) {
-//       this.setState({
-//         strike: this.state.strike + 1
-//       });
-//       alert("Strike!");
-//     } else if (play > 33 && play < 66) {
-//       this.setState({
-//         ball: this.state.ball + 1
-//       });
-//       alert("Ball!");
-//     } else {
-//       this.setState({
-//         guestScore: this.state.guestScore + 1,
-//         homeScore: this.state.homeScore + 1
-//       });
-//       alert("Homerun!");
-//       this.resetPosession();
-//     }
-//   }
-// } else {
-//   this.setState({
-//     outs: 0,
-//     guestAtBat: !this.state.guestAtBat,
-//     homeAtBat: !this.state.homeAtBat
-//   });
-// }
-
-// if (this.state.strike > 2 || this.state.ball > 3) {
-//   this.resetPosession();
-//   this.setState({
-//     outs: this.state.outs + 1
-//   });
-// }
