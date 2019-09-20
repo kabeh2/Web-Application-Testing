@@ -185,7 +185,7 @@ class App extends Component {
       <div className="App">
         <div className="btn_controls--container">
           {/* GAME IS DONE WHEN MORE THAN 9 INNINGS  */}
-          {homeInning < 3 ? (
+          {homeInning < 10 ? (
             ball === 4 || strike === 3 || outs === 3 ? (
               <button onClick={this.nextPossession} className="play-btn">
                 {outs === 3
@@ -208,7 +208,7 @@ class App extends Component {
 
         {/* IF GAME IS DONE, GAME OVER MESSAGE, IF NOT, SHOW WHAT TEAM
         IS AT BAT */}
-        {homeInning > 2 ? (
+        {homeInning > 9 ? (
           <div className="at-bat">
             GAME OVER!
             {guestScore > homeScore
