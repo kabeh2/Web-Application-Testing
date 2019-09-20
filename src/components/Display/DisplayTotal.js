@@ -7,10 +7,10 @@ const DisplayTotal = ({ guestScore, homeScore }) => {
         <h4 className="total__score--title">Total</h4>
       </div>
       <div className="total__score--guest">
-        <h2>{guestScore}</h2>
+        <h2>{`G: ${guestScore}`}</h2>
       </div>
       <div className="total__score--home">
-        <h2>{homeScore}</h2>
+        <h2>{`H: ${homeScore}`}</h2>
       </div>
     </div>
   );

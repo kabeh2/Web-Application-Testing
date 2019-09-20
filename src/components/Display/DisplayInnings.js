@@ -15,14 +15,26 @@ const DisplayInnings = ({ guestInningTotal, homeInningTotal }) => {
       <div className="guest__inning--container">
         {Object.keys(guestInningTotal).map(inning => (
           <div className="guest__inning " key={inning}>
-            <h2>{guestInningTotal[inning]}</h2>
+            <h2
+              style={{
+                color: guestInningTotal[inning] > 0 ? "#fff" : "crimson"
+              }}
+            >
+              {guestInningTotal[inning]}
+            </h2>
           </div>
         ))}
       </div>
       <div className="home__inning--container">
         {Object.keys(homeInningTotal).map(inning => (
           <div className="home__inning " key={inning}>
-            <h2>{homeInningTotal[inning]}</h2>
+            <h2
+              style={{
+                color: homeInningTotal[inning] > 0 ? "#fff" : "crimson"
+              }}
+            >
+              {homeInningTotal[inning]}
+            </h2>
           </div>
         ))}
       </div>

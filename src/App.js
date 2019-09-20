@@ -1,41 +1,13 @@
 import React, { Component } from "react";
 import Display from "./components/Display/Display";
+import { InitialState } from "./InitialState";
 import "./App.scss";
 
 class App extends Component {
-  state = {
-    ball: 0,
-    strike: 0,
-    outs: 0,
-    guestScore: 0,
-    homeScore: 0,
-    guestAtBat: true,
-    homeAtBat: false,
-    guestInning: 1,
-    guestInningTotal: {
-      1: 0,
-      2: 0,
-      3: 0,
-      4: 0,
-      5: 0,
-      6: 0,
-      7: 0,
-      8: 0,
-      9: 0
-    },
-    homeInning: 1,
-    homeInningTotal: {
-      1: 0,
-      2: 0,
-      3: 0,
-      4: 0,
-      5: 0,
-      6: 0,
-      7: 0,
-      8: 0,
-      9: 0
-    },
-    inningHRCounter: 0
+  state = InitialState;
+
+  handleGameRestart = () => {
+    this.setState(InitialState);
   };
 
   resetPosession = () => {
@@ -97,7 +69,9 @@ class App extends Component {
       guestInning,
       homeInningTotal,
       homeInning,
-      inningHRCounter
+      inningHRCounter,
+      pitchesGuest,
+      pitchesHome
     } = this.state;
 
     const play = Math.random() * 100;
@@ -117,6 +91,15 @@ class App extends Component {
           strike: strike + 1
         });
         alert("Strike!");
+        if (guestAtBat) {
+          this.setState({
+            pitchesGuest: pitchesGuest + 1
+          });
+        } else {
+          this.setState({
+            pitchesHome: pitchesHome + 1
+          });
+        }
       } else if (strike > 2 && outs < 3 && ball < 4) {
         this.setState({
           outs: outs + 1
@@ -133,6 +116,15 @@ class App extends Component {
           ball: ball + 1
         });
         alert("Ball!");
+        if (guestAtBat) {
+          this.setState({
+            pitchesGuest: pitchesGuest + 1
+          });
+        } else {
+          this.setState({
+            pitchesHome: pitchesHome + 1
+          });
+        }
       } else if (ball > 3 && outs < 3 && strike < 3) {
         this.setState({
           ball: ball + 1,
@@ -150,7 +142,8 @@ class App extends Component {
           this.setState({
             guestScore: guestScore + 1,
             inningHRCounter: inningHRCounter + 1,
-            guestInningTotal: guestInningUpdatedTotal
+            guestInningTotal: guestInningUpdatedTotal,
+            pitchesGuest: pitchesGuest + 1
           });
           alert("Guest Team Homerun!");
           this.resetPosession();
@@ -160,7 +153,8 @@ class App extends Component {
           this.setState({
             homeScore: homeScore + 1,
             inningHRCounter: inningHRCounter + 1,
-            homeInningTotal: homeInningUpdatedTotal
+            homeInningTotal: homeInningUpdatedTotal,
+            pitchesHome: pitchesHome + 1
           });
           alert("Home Team Homerun!");
           this.resetPosession();
@@ -179,34 +173,53 @@ class App extends Component {
       homeScore,
       guestAtBat,
       homeAtBat,
-      inningHRCounter,
       guestInning,
       guestInningTotal,
       homeInning,
-      homeInningTotal
+      homeInningTotal,
+      pitchesGuest,
+      pitchesHome
     } = this.state;
 
     return (
       <div className="App">
-        {ball === 4 || strike === 3 || outs === 3 ? (
-          <button onClick={this.nextPossession}>
-            {outs === 3 ? "Click for Next TEAM!" : "Click for Next Possession!"}
+        <div className="btn_controls--container">
+          {/* GAME IS DONE WHEN MORE THAN 9 INNINGS  */}
+          {homeInning < 3 ? (
+            ball === 4 || strike === 3 || outs === 3 ? (
+              <button onClick={this.nextPossession} className="play-btn">
+                {outs === 3
+                  ? "Click for Next TEAM!"
+                  : "Click for Next Possession!"}
+              </button>
+            ) : (
+              <button onClick={this.handleClick} className="play-btn">
+                Play Ball!
+              </button>
+            )
+          ) : (
+            <button disabled>GAME OVER!</button>
+          )}
+
+          <button onClick={this.handleGameRestart} id="restart-btn">
+            New Game!
           </button>
+        </div>
+
+        {/* IF GAME IS DONE, GAME OVER MESSAGE, IF NOT, SHOW WHAT TEAM
+        IS AT BAT */}
+        {homeInning > 2 ? (
+          <div className="at-bat">
+            GAME OVER!
+            {guestScore > homeScore
+              ? " WINNER GUEST TEAM!"
+              : guestScore === homeScore
+              ? " TIE BALL GAME"
+              : " WINNER HOME TEAM!"}
+          </div>
         ) : (
-          <button onClick={this.handleClick}>Play Ball!</button>
+          <div className="at-bat">At Bat: {guestAtBat ? "Guest" : "Home"}</div>
         )}
-        <div
-          className="at-bat"
-          style={{ color: "green", fontWeight: "bolder" }}
-        >
-          At Bat: {guestAtBat ? "Guest" : "Home"}
-        </div>
-        <div
-          className="at-bat"
-          style={{ color: "green", fontWeight: "bolder" }}
-        >
-          Inning Homeruns: {inningHRCounter}
-        </div>
 
         <Display
           ball={ball}
@@ -221,6 +234,8 @@ class App extends Component {
           homeInningTotal={homeInningTotal}
           guestInning={guestInning}
           homeInning={homeInning}
+          pitchesGuest={pitchesGuest}
+          pitchesHome={pitchesHome}
         />
       </div>
     );

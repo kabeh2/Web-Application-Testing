@@ -9,16 +9,14 @@ const Display = ({
   ball,
   strike,
   outs,
-  homerun,
   guestScore,
   homeScore,
-  guestAtBat,
-  homeAtBat,
-  inningHRCounter,
   guestInning,
   guestInningTotal,
   homeInning,
-  homeInningTotal
+  homeInningTotal,
+  pitchesGuest,
+  pitchesHome
 }) => {
   return (
     <div className="display__container">
@@ -30,7 +28,11 @@ const Display = ({
       />
       <DisplayTotal guestScore={guestScore} homeScore={homeScore} />
       <div className="pitches-home--container right">
-        <PitchesTotal name="Home" borderSide="right" />
+        <PitchesTotal
+          name="Home"
+          borderSide="right"
+          pitchesTotal={pitchesHome}
+        />
       </div>
       <div className="possession-wrapper">
         <div className="possession--ball">
@@ -44,7 +46,11 @@ const Display = ({
         </div>
       </div>
       <div className="pitches-away--container left">
-        <PitchesTotal name="Away" borderSide="left" />
+        <PitchesTotal
+          name="Guest"
+          borderSide="left"
+          pitchesTotal={pitchesGuest}
+        />
       </div>
     </div>
   );
