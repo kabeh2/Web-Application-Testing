@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Display from "./components/Display/Display";
 import { InitialState } from "./InitialState";
 import "./App.scss";
+import AppContext from "./context/AppContext";
 
 class App extends Component {
   state = InitialState;
@@ -24,7 +25,6 @@ class App extends Component {
         outs: 0,
         guestAtBat: !this.state.guestAtBat,
         homeAtBat: !this.state.homeAtBat,
-
         guestInning: this.state.guestInning + 1,
         inningHRCounter: 0
       });
@@ -35,7 +35,6 @@ class App extends Component {
         outs: 0,
         guestAtBat: !this.state.guestAtBat,
         homeAtBat: !this.state.homeAtBat,
-
         homeInning: this.state.homeInning + 1,
         inningHRCounter: 0
       });
@@ -168,76 +167,70 @@ class App extends Component {
       ball,
       strike,
       outs,
-      homerun,
       guestScore,
       homeScore,
       guestAtBat,
-      homeAtBat,
-      guestInning,
-      guestInningTotal,
       homeInning,
-      homeInningTotal,
       pitchesGuest,
       pitchesHome
     } = this.state;
 
     return (
-      <div className="App">
-        <div className="btn_controls--container">
-          {/* GAME IS DONE WHEN MORE THAN 9 INNINGS  */}
-          {homeInning < 10 ? (
-            ball === 4 || strike === 3 || outs === 3 ? (
-              <button onClick={this.nextPossession} className="play-btn">
-                {outs === 3
-                  ? "Click for Next TEAM!"
-                  : "Click for Next Possession!"}
-              </button>
+      <AppContext.Provider
+        value={{
+          state: this.state
+        }}
+      >
+        <div className="App">
+          <div className="btn_controls--container">
+            {/* GAME IS DONE WHEN MORE THAN 9 INNINGS  */}
+            {homeInning < 10 ? (
+              ball === 4 || strike === 3 || outs === 3 ? (
+                <button onClick={this.nextPossession} className="play-btn">
+                  {outs === 3
+                    ? "Click for Next TEAM!"
+                    : "Click for Next Possession!"}
+                </button>
+              ) : (
+                <button onClick={this.handleClick} className="play-btn">
+                  Play Ball!
+                </button>
+              )
             ) : (
-              <button onClick={this.handleClick} className="play-btn">
-                Play Ball!
-              </button>
-            )
+              <button disabled>GAME OVER!</button>
+            )}
+
+            <button onClick={this.handleGameRestart} id="restart-btn">
+              New Game!
+            </button>
+          </div>
+
+          {/* IF GAME IS DONE, GAME OVER MESSAGE, IF NOT, SHOW WHAT TEAM
+        IS AT BAT */}
+          {homeInning > 9 ? (
+            <div className="at-bat">
+              GAME OVER!
+              {guestScore > homeScore
+                ? " WINNER GUEST TEAM!"
+                : guestScore === homeScore
+                ? " TIE BALL GAME"
+                : " WINNER HOME TEAM!"}
+            </div>
           ) : (
-            <button disabled>GAME OVER!</button>
+            <div className="at-bat">
+              At Bat: {guestAtBat ? "Guest" : "Home"}
+            </div>
           )}
 
-          <button onClick={this.handleGameRestart} id="restart-btn">
-            New Game!
-          </button>
+          <Display
+            ball={ball}
+            strike={strike}
+            outs={outs}
+            pitchesGuest={pitchesGuest}
+            pitchesHome={pitchesHome}
+          />
         </div>
-
-        {/* IF GAME IS DONE, GAME OVER MESSAGE, IF NOT, SHOW WHAT TEAM
-        IS AT BAT */}
-        {homeInning > 9 ? (
-          <div className="at-bat">
-            GAME OVER!
-            {guestScore > homeScore
-              ? " WINNER GUEST TEAM!"
-              : guestScore === homeScore
-              ? " TIE BALL GAME"
-              : " WINNER HOME TEAM!"}
-          </div>
-        ) : (
-          <div className="at-bat">At Bat: {guestAtBat ? "Guest" : "Home"}</div>
-        )}
-
-        <Display
-          ball={ball}
-          strike={strike}
-          outs={outs}
-          homerun={homerun}
-          guestScore={guestScore}
-          homeScore={homeScore}
-          guestAtBat={guestAtBat}
-          homeAtBat={homeAtBat}
-          guestInningTotal={guestInningTotal}
-          homeInningTotal={homeInningTotal}
-          guestInning={guestInning}
-          homeInning={homeInning}
-          pitchesGuest={pitchesGuest}
-          pitchesHome={pitchesHome}
-        />
-      </div>
+      </AppContext.Provider>
     );
   }
 }
