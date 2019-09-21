@@ -110,7 +110,22 @@ class App extends Component {
     /////////////////////////////////////
     ///////////////////////////// IF BALL
     else if (play > 45 && play < 90) {
-      if (ball < 4 && outs < 3 && strike < 3) {
+      if (ball < 4 && outs < 3 && strike < 2) {
+        this.setState({
+          ball: ball + 1,
+          strike: strike + 1
+        });
+        alert("Ball!");
+        if (guestAtBat) {
+          this.setState({
+            pitchesGuest: pitchesGuest + 1
+          });
+        } else {
+          this.setState({
+            pitchesHome: pitchesHome + 1
+          });
+        }
+      } else if (ball < 4 && outs < 3 && strike < 3) {
         this.setState({
           ball: ball + 1
         });
