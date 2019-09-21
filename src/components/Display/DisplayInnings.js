@@ -1,6 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
+import AppContext from "../../context/AppContext";
 
-const DisplayInnings = ({ guestInningTotal, homeInningTotal }) => {
+const DisplayInnings = () => {
+  /////////////////////////
+  // with useContext way
+  /////////////////////////
+  const appContext = useContext(AppContext);
+  const { guestInningTotal, homeInningTotal } = appContext.state;
+
   return (
     <div className="display__innings--container">
       <h2 className="display__innings--guest">Guest</h2>

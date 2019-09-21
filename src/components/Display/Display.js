@@ -5,28 +5,12 @@ import DisplayTotal from "./DisplayTotal";
 import PitchesTotal from "./PitchesTotal";
 import Possession from "./Possession";
 
-const Display = ({
-  ball,
-  strike,
-  outs,
-  guestScore,
-  homeScore,
-  guestInning,
-  guestInningTotal,
-  homeInning,
-  homeInningTotal,
-  pitchesGuest,
-  pitchesHome
-}) => {
+const Display = ({ ball, strike, outs, pitchesGuest, pitchesHome }) => {
   return (
     <div className="display__container">
-      <DisplayInnings
-        guestInningTotal={guestInningTotal}
-        homeInningTotal={homeInningTotal}
-        guestInning={guestInning}
-        homeInning={homeInning}
-      />
-      <DisplayTotal guestScore={guestScore} homeScore={homeScore} />
+      {/* Pass State with Context for the 2 below */}
+      <DisplayInnings />
+      <DisplayTotal />
       <div className="pitches-home--container right">
         <PitchesTotal
           name="Home"
