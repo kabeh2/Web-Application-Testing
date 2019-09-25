@@ -196,26 +196,40 @@ class App extends Component {
           state: this.state
         }}
       >
-        <div className="App">
+        <div className="App" data-test="component-app">
           <div className="btn_controls--container">
             {/* GAME IS DONE WHEN MORE THAN 9 INNINGS  */}
             {homeInning < 10 ? (
               ball === 4 || strike === 3 || outs === 3 ? (
-                <button onClick={this.nextPossession} className="play-btn">
+                <button
+                  onClick={this.nextPossession}
+                  className="play-btn"
+                  data-test="component-next-btn"
+                >
                   {outs === 3
                     ? "Click for Next TEAM!"
                     : "Click for Next Possession!"}
                 </button>
               ) : (
-                <button onClick={this.handleClick} className="play-btn">
+                <button
+                  onClick={this.handleClick}
+                  className="play-btn"
+                  data-test="component-play-ball-btn"
+                >
                   Play Ball!
                 </button>
               )
             ) : (
-              <button disabled>GAME OVER!</button>
+              <button disabled data-test="component-game-over-btn">
+                GAME OVER!
+              </button>
             )}
 
-            <button onClick={this.handleGameRestart} id="restart-btn">
+            <button
+              onClick={this.handleGameRestart}
+              id="restart-btn"
+              data-test="component-restart-btn"
+            >
               New Game!
             </button>
           </div>
@@ -223,7 +237,7 @@ class App extends Component {
           {/* IF GAME IS DONE, GAME OVER MESSAGE, IF NOT, SHOW WHAT TEAM
         IS AT BAT */}
           {homeInning > 9 ? (
-            <div className="at-bat">
+            <div className="at-bat" data-test="component-winner">
               GAME OVER!
               {guestScore > homeScore
                 ? " WINNER GUEST TEAM!"
@@ -232,12 +246,13 @@ class App extends Component {
                 : " WINNER HOME TEAM!"}
             </div>
           ) : (
-            <div className="at-bat">
+            <div className="at-bat" data-test="component-at-bat">
               At Bat: {guestAtBat ? "Guest" : "Home"}
             </div>
           )}
 
           <Display
+            data-test="component-display"
             ball={ball}
             strike={strike}
             outs={outs}
